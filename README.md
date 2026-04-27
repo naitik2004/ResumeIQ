@@ -7,11 +7,10 @@
 <h4 align="center">An AI-powered, brutally honest ATS Resume Analyzer built with FastAPI, React, and Groq's Llama 3.</h4>
 
 <p align="center">
-  <a href="#key-features">Key Features</a> •
-  <a href="#how-it-works">How To Use</a> •
-  <a href="#architecture">Architecture</a> •
-  <a href="#installation">Installation</a> •
-  <a href="#tech-stack">Tech Stack</a>
+  <a href="#-key-features">Key Features</a> •
+  <a href="#-architecture">Architecture</a> •
+  <a href="#-installation--local-setup">Installation</a> •
+  <a href="#-tech-stack-breakdown">Tech Stack</a>
 </p>
 
 ---
