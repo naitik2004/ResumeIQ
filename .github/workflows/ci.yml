@@ -25,6 +25,8 @@ jobs:
         
     - name: Test with pytest
       working-directory: ./backend
+      env:
+        GROQ_API_KEY: "test-key"
       run: |
         pytest
         

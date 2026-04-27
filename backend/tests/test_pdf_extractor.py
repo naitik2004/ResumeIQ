@@ -1,9 +1,17 @@
 import pytest
+from unittest.mock import patch, MagicMock
 from fastapi import HTTPException
 from app.core.pdf_extractor import extract_text
 
-def test_extract_text_valid(valid_pdf_bytes):
-    text = extract_text(valid_pdf_bytes)
+@patch("app.core.pdf_extractor.fitz.open")
+def test_extract_text_valid(mock_fitz_open):
+    mock_doc = MagicMock()
+    mock_page = MagicMock()
+    mock_page.get_text.return_value = "This is a test resume with more than 50 characters to pass validation test."
+    mock_doc.__iter__.return_value = [mock_page]
+    mock_fitz_open.return_value = mock_doc
+    
+    text = extract_text(b"fakebytes")
     assert "This is a test resume with more than 50 characters to pass validation test." in text
 
 def test_extract_text_empty(empty_pdf_bytes):

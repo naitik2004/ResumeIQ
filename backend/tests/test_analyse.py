@@ -10,7 +10,9 @@ async def test_health_check(async_client):
 
 @pytest.mark.asyncio
 @patch("app.api.v1.analyse.stream_analysis")
-async def test_analyse_valid_pdf(mock_stream, async_client, valid_pdf_bytes):
+@patch("app.api.v1.analyse.extract_text")
+async def test_analyse_valid_pdf(mock_extract, mock_stream, async_client, valid_pdf_bytes):
+    mock_extract.return_value = "This is a valid resume text with lots of skills and experience."
     # Mock the streaming response generator
     async def mock_generator():
         yield '{"ats_score": 85}'

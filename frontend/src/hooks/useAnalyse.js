@@ -26,9 +26,13 @@ export const useAnalyse = () => {
       const reader = stream.getReader();
       const decoder = new TextDecoder();
 
-      while (true) {
+      let isDone = false;
+      while (!isDone) {
         const { value, done } = await reader.read();
-        if (done) break;
+        if (done) {
+          isDone = true;
+          break;
+        }
         
         const chunk = decoder.decode(value, { stream: true });
         streamRef.current += chunk;
