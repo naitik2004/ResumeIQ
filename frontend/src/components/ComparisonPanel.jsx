@@ -1,4 +1,3 @@
-import React from 'react';
 import ScoreRing from './ScoreRing';
 import VerdictBadge from './VerdictBadge';
 
