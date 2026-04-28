@@ -23,7 +23,7 @@ const ComparisonPanel = ({ data }) => {
         {/* Resume A */}
         <div className="glass-card" style={{ padding: '2rem' }}>
           <h3 style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            Resume A
+            {analysis_a.candidate_name || "Resume A"}
             <VerdictBadge verdict={analysis_a.verdict} />
           </h3>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
@@ -49,7 +49,7 @@ const ComparisonPanel = ({ data }) => {
         {/* Resume B */}
         <div className="glass-card" style={{ padding: '2rem' }}>
           <h3 style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            Resume B
+            {analysis_b.candidate_name || "Resume B"}
             <VerdictBadge verdict={analysis_b.verdict} />
           </h3>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>

@@ -17,6 +17,7 @@ def build_prompt(resume_text: str, job_description: str = '') -> str:
     
     The JSON must match this structure exactly:
     {
+      "candidate_name": "string (full name from resume)",
       "ats_score": number (0-100),
       "summary": "string (2-sentence overview)",
       "strengths": ["string", "string", "string"] (exactly 3 items),
@@ -65,6 +66,7 @@ def build_comparison_prompt(resume_a_text: str, resume_b_text: str, job_descript
     Structure:
     {
       "analysis_a": { 
+        "candidate_name": "string",
         "ats_score": number (0-100), 
         "summary": "string", 
         "verdict": "STRONG HIRE" | "INTERVIEW" | "MAYBE" | "REJECT",
@@ -72,14 +74,15 @@ def build_comparison_prompt(resume_a_text: str, resume_b_text: str, job_descript
         "critical_gap": "string"
       },
       "analysis_b": { 
+        "candidate_name": "string",
         "ats_score": number (0-100), 
         "summary": "string", 
-        "verdict": "STRONG HIRE" | "INTERVIEW" | "MAYBE" | "PASS",
+        "verdict": "STRONG HIRE" | "INTERVIEW" | "MAYBE" | "REJECT",
         "top_skills": ["string", "string"],
         "critical_gap": "string"
       },
       "comparison": {
-        "winner": "RESUME A" | "RESUME B" | "DRAW",
+        "winner": "string (candidate name)",
         "rationale": "string",
         "technical_comparison": "string (one sentence comparing tech depth)",
         "project_comparison": "string (one sentence comparing impact)",
