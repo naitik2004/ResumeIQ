@@ -1,3 +1,5 @@
+const API_BASE_URL = import.meta.env.VITE_API_URL || '';
+
 export const analyseResume = async (file, jobDescription) => {
   const formData = new FormData();
   formData.append('resume', file);
@@ -5,7 +7,7 @@ export const analyseResume = async (file, jobDescription) => {
     formData.append('job_description', jobDescription);
   }
 
-  const response = await fetch('/api/v1/analyse', {
+  const response = await fetch(`${API_BASE_URL}/api/v1/analyse`, {
     method: 'POST',
     body: formData,
   });
@@ -32,7 +34,7 @@ export const compareResumes = async (fileA, fileB, jobDescription) => {
     formData.append('job_description', jobDescription);
   }
 
-  const response = await fetch('/api/v1/compare', {
+  const response = await fetch(`${API_BASE_URL}/api/v1/compare`, {
     method: 'POST',
     body: formData,
   });
