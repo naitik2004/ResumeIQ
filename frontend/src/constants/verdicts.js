@@ -20,11 +20,11 @@ export const VERDICTS = {
     color: 'var(--yellow)',
     icon: '🤔'
   },
-  'PASS': {
-    label: 'Pass',
+  'REJECT': {
+    label: 'Reject',
     bg: 'rgba(255, 77, 106, 0.1)',
     border: 'var(--red)',
     color: 'var(--red)',
-    icon: '❌'
+    icon: '🚫'
   }
 };

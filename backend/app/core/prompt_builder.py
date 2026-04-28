@@ -28,7 +28,7 @@ def build_prompt(resume_text: str, job_description: str = '') -> str:
         { "section": "string", "suggestion": "string" },
         { "section": "string", "suggestion": "string" }
       ] (exactly 3 items),
-      "verdict": "STRONG HIRE" | "INTERVIEW" | "MAYBE" | "PASS",
+      "verdict": "STRONG HIRE" | "INTERVIEW" | "MAYBE" | "REJECT",
       "verdict_reason": "string (one sentence)"
     }
     """
@@ -57,30 +57,46 @@ def build_comparison_prompt(resume_a_text: str, resume_b_text: str, job_descript
     
     jd_section = ""
     if job_description.strip():
-        jd_section = f"\n\nJOB DESCRIPTION:\n{job_description.strip()}\n"
+        jd_section = f"\n\nJOB DESCRIPTION:\n{job_description.strip()}\nUse this for exact keyword and requirement matching."
 
     schema_instruction = """
-    Return ONLY a raw JSON object. No markdown fences.
+    Return ONLY a raw JSON object. No markdown.
     
     Structure:
     {
       "analysis_a": { 
-        "ats_score": number, "summary": "string", "verdict": "string"
+        "ats_score": number (0-100), 
+        "summary": "string", 
+        "verdict": "STRONG HIRE" | "INTERVIEW" | "MAYBE" | "REJECT",
+        "top_skills": ["string", "string"],
+        "critical_gap": "string"
       },
       "analysis_b": { 
-        "ats_score": number, "summary": "string", "verdict": "string"
+        "ats_score": number (0-100), 
+        "summary": "string", 
+        "verdict": "STRONG HIRE" | "INTERVIEW" | "MAYBE" | "PASS",
+        "top_skills": ["string", "string"],
+        "critical_gap": "string"
       },
       "comparison": {
         "winner": "RESUME A" | "RESUME B" | "DRAW",
         "rationale": "string",
+        "technical_comparison": "string (one sentence comparing tech depth)",
+        "project_comparison": "string (one sentence comparing impact)",
         "differences": ["string", "string", "string"]
       }
     }
     """
 
-    prompt = f"""You are a brutally honest senior recruiter. Compare these two resumes side-by-side.
+    prompt = f"""You are an expert ATS system and a brutally honest, extremely strict senior technical recruiter.
+Compare these two resumes side-by-side. You MUST be unforgiving and rigorously critical.
+
+RULES:
+- Do NOT inflate scores. A score above 75 is rare.
+- If a resume lacks measurable impact or specific tech mentioned in the JD, penalize it heavily.
+- Evaluate technical depth, project complexity, and measurable results.
+
 {jd_section}
-You must analyze both individually AND compare them. 
 
 {schema_instruction}
 

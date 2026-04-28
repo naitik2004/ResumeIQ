@@ -29,7 +29,21 @@ const ComparisonPanel = ({ data }) => {
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
             <ScoreRing score={analysis_a.ats_score} size={150} />
           </div>
-          <p style={{ color: 'var(--text)', lineHeight: '1.6' }}>{analysis_a.summary}</p>
+          <p style={{ color: 'var(--text)', lineHeight: '1.6', marginBottom: '1.5rem' }}>{analysis_a.summary}</p>
+          
+          <div style={{ marginBottom: '1.5rem' }}>
+            <h4 style={{ fontSize: '0.9rem', color: 'var(--accent)', marginBottom: '0.5rem', textTransform: 'uppercase' }}>Top Skills</h4>
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+              {analysis_a.top_skills.map(skill => (
+                <span key={skill} style={{ padding: '0.3rem 0.8rem', background: 'rgba(255,255,255,0.05)', borderRadius: '6px', fontSize: '0.8rem' }}>{skill}</span>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h4 style={{ fontSize: '0.9rem', color: 'var(--red)', marginBottom: '0.5rem', textTransform: 'uppercase' }}>Critical Gap</h4>
+            <p style={{ fontSize: '0.9rem', color: 'var(--muted)' }}>{analysis_a.critical_gap}</p>
+          </div>
         </div>
 
         {/* Resume B */}
@@ -41,12 +55,40 @@ const ComparisonPanel = ({ data }) => {
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
             <ScoreRing score={analysis_b.ats_score} size={150} />
           </div>
-          <p style={{ color: 'var(--text)', lineHeight: '1.6' }}>{analysis_b.summary}</p>
+          <p style={{ color: 'var(--text)', lineHeight: '1.6', marginBottom: '1.5rem' }}>{analysis_b.summary}</p>
+
+          <div style={{ marginBottom: '1.5rem' }}>
+            <h4 style={{ fontSize: '0.9rem', color: 'var(--accent)', marginBottom: '0.5rem', textTransform: 'uppercase' }}>Top Skills</h4>
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+              {analysis_b.top_skills.map(skill => (
+                <span key={skill} style={{ padding: '0.3rem 0.8rem', background: 'rgba(255,255,255,0.05)', borderRadius: '6px', fontSize: '0.8rem' }}>{skill}</span>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h4 style={{ fontSize: '0.9rem', color: 'var(--red)', marginBottom: '0.5rem', textTransform: 'uppercase' }}>Critical Gap</h4>
+            <p style={{ fontSize: '0.9rem', color: 'var(--muted)' }}>{analysis_b.critical_gap}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="glass-card" style={{ padding: '2rem', marginTop: '2rem' }}>
+        <h3 style={{ marginBottom: '1.5rem' }}>Detailed Breakdown</h3>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+          <div>
+            <h4 style={{ color: 'var(--accent)', marginBottom: '0.5rem' }}>Technical Depth</h4>
+            <p style={{ color: 'var(--muted)', fontSize: '0.95rem' }}>{comparison.technical_comparison}</p>
+          </div>
+          <div>
+            <h4 style={{ color: 'var(--accent)', marginBottom: '0.5rem' }}>Project Impact</h4>
+            <p style={{ color: 'var(--muted)', fontSize: '0.95rem' }}>{comparison.project_comparison}</p>
+          </div>
         </div>
       </div>
 
       <div className="differences-section glass-card" style={{ padding: '2rem', marginTop: '2rem' }}>
-        <h3 style={{ marginBottom: '1.5rem' }}>Key Differences</h3>
+        <h3 style={{ marginBottom: '1.5rem' }}>Key Differentiators</h3>
         <ul style={{ listStyle: 'none' }}>
           {comparison.differences.map((diff, index) => (
             <li key={index} style={{ 
