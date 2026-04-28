@@ -10,7 +10,8 @@
   <a href="#-key-features">Key Features</a> •
   <a href="#-architecture">Architecture</a> •
   <a href="#-installation--local-setup">Installation</a> •
-  <a href="#-tech-stack-breakdown">Tech Stack</a>
+  <a href="#-tech-stack-breakdown">Tech Stack</a> •
+  <a href="https://github.com/naitik2004/ResumeIQ/blob/main/deployment_guide.md">Deployment Guide</a>
 </p>
 
 ---
