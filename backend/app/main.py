@@ -26,4 +26,4 @@ app.add_middleware(
 )
 
 # Include Routers
-app.include_router(v1_router, prefix="/v1")
+app.include_router(v1_router, prefix="/api/v1")
