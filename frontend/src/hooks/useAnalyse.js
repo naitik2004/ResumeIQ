@@ -1,9 +1,10 @@
 import { useState, useRef } from 'react';
-import { analyseResume } from '../services/api';
+import { analyseResume, compareResumes } from '../services/api';
 import { parseStreamResult } from '../utils/parseStream';
 
-export const useAnalyse = () => {
+export const useAnalyse = (mode = 'single') => {
   const [file, setFile] = useState(null);
+  const [fileB, setFileB] = useState(null);
   const [jd, setJd] = useState('');
   const [status, setStatus] = useState('idle'); // idle | loading | done | error
   const [result, setResult] = useState(null);
@@ -13,7 +14,8 @@ export const useAnalyse = () => {
   const streamRef = useRef('');
 
   const analyse = async () => {
-    if (!file) return;
+    if (mode === 'single' && !file) return;
+    if (mode === 'compare' && (!file || !fileB)) return;
     
     setStatus('loading');
     setError(null);
@@ -22,7 +24,10 @@ export const useAnalyse = () => {
     streamRef.current = '';
 
     try {
-      const stream = await analyseResume(file, jd);
+      const stream = mode === 'single' 
+        ? await analyseResume(file, jd)
+        : await compareResumes(file, fileB, jd);
+
       const reader = stream.getReader();
       const decoder = new TextDecoder();
 
@@ -39,7 +44,6 @@ export const useAnalyse = () => {
         setStreamText(streamRef.current);
       }
       
-      // Parse once stream ends
       const parsedResult = parseStreamResult(streamRef.current);
       setResult(parsedResult);
       setStatus('done');
@@ -51,6 +55,7 @@ export const useAnalyse = () => {
 
   const reset = () => {
     setFile(null);
+    setFileB(null);
     setJd('');
     setStatus('idle');
     setResult(null);
@@ -62,6 +67,8 @@ export const useAnalyse = () => {
   return {
     file,
     setFile,
+    fileB,
+    setFileB,
     jd,
     setJd,
     status,

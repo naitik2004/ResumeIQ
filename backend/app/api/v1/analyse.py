@@ -2,7 +2,7 @@ from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from fastapi.responses import StreamingResponse
 from ...config import settings
 from ...core.pdf_extractor import extract_text
-from ...core.prompt_builder import build_prompt
+from ...core.prompt_builder import build_prompt, build_comparison_prompt
 from ...core.llm_client import stream_analysis
 
 router = APIRouter()
@@ -32,6 +32,32 @@ async def analyse_resume(
     prompt = build_prompt(extracted_text, job_description)
     
     # Return streaming response
+    return StreamingResponse(
+        stream_analysis(prompt),
+        media_type='text/plain'
+    )
+
+@router.post("/compare")
+async def compare_resumes(
+    resume_a: UploadFile = File(...),
+    resume_b: UploadFile = File(...),
+    job_description: str = Form("")
+):
+    """
+    Compares two resumes against a job description.
+    """
+    # Validate MIME types
+    if resume_a.content_type != "application/pdf" or resume_b.content_type != "application/pdf":
+        raise HTTPException(status_code=400, detail="Only PDF files are supported.")
+        
+    bytes_a = await resume_a.read()
+    bytes_b = await resume_b.read()
+    
+    text_a = extract_text(bytes_a)
+    text_b = extract_text(bytes_b)
+    
+    prompt = build_comparison_prompt(text_a, text_b, job_description)
+    
     return StreamingResponse(
         stream_analysis(prompt),
         media_type='text/plain'

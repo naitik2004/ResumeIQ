@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 
-const UploadZone = ({ onFile, file }) => {
+const UploadZone = ({ onFile, file, label = "Resume", id = "resume" }) => {
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef(null);
 
@@ -21,7 +21,7 @@ const UploadZone = ({ onFile, file }) => {
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       const droppedFile = e.dataTransfer.files[0];
       if (droppedFile.type === 'application/pdf') {
-        onFile(droppedFile);
+        onFile(droppedFile, id);
       } else {
         alert('Only PDF files are allowed.');
       }
@@ -36,7 +36,7 @@ const UploadZone = ({ onFile, file }) => {
     if (e.target.files && e.target.files.length > 0) {
       const selectedFile = e.target.files[0];
       if (selectedFile.type === 'application/pdf') {
-        onFile(selectedFile);
+        onFile(selectedFile, id);
       } else {
         alert('Only PDF files are allowed.');
       }
@@ -49,19 +49,19 @@ const UploadZone = ({ onFile, file }) => {
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
       onClick={handleClick}
+      className="glass-card"
       style={{
-        border: `2px dashed ${isDragging ? 'var(--accent)' : file ? 'var(--green)' : 'var(--border)'}`,
-        backgroundColor: isDragging ? 'rgba(0, 229, 255, 0.05)' : 'var(--surface2)',
-        padding: '3rem 2rem',
-        borderRadius: '12px',
-        textAlign: 'center',
+        border: `2px dashed ${isDragging ? 'var(--accent)' : file ? 'rgba(0, 255, 157, 0.3)' : 'var(--border)'}`,
+        background: isDragging ? 'rgba(0, 240, 255, 0.05)' : 'var(--surface)',
+        padding: '2.5rem 1.5rem',
         cursor: 'pointer',
-        transition: 'all 0.3s ease',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        minHeight: '200px'
+        minHeight: '180px',
+        flex: 1,
+        animation: 'slide-in 0.5s ease-out'
       }}
     >
       <input
@@ -73,21 +73,23 @@ const UploadZone = ({ onFile, file }) => {
       />
       
       {file ? (
-        <>
-          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📄</div>
-          <h3 style={{ color: 'var(--green)', marginBottom: '0.5rem' }}>{file.name}</h3>
-          <p style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>
-            {(file.size / 1024 / 1024).toFixed(2)} MB • Click to change
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>📄</div>
+          <h4 style={{ color: 'var(--green)', marginBottom: '0.25rem', fontSize: '1rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '200px' }}>
+            {file.name}
+          </h4>
+          <p style={{ color: 'var(--muted)', fontSize: '0.8rem' }}>
+            {label} Ready • Click to swap
           </p>
-        </>
+        </div>
       ) : (
-        <>
-          <div style={{ fontSize: '3rem', marginBottom: '1rem', opacity: 0.8 }}>📁</div>
-          <h3 style={{ marginBottom: '0.5rem' }}>Drag & Drop your Resume</h3>
-          <p style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>
-            Supports PDF up to 5MB
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem', opacity: 0.6 }}>📁</div>
+          <h4 style={{ marginBottom: '0.25rem', fontSize: '1rem' }}>Upload {label}</h4>
+          <p style={{ color: 'var(--muted)', fontSize: '0.8rem' }}>
+            Click or drag PDF
           </p>
-        </>
+        </div>
       )}
     </div>
   );

@@ -47,3 +47,47 @@ RESUME:
 END RESUME
 """
     return prompt
+
+def build_comparison_prompt(resume_a_text: str, resume_b_text: str, job_description: str = '') -> str:
+    """
+    Builds a prompt to compare two resumes against a job description.
+    """
+    truncated_a = truncate_text(resume_a_text, max_chars=4000)
+    truncated_b = truncate_text(resume_b_text, max_chars=4000)
+    
+    jd_section = ""
+    if job_description.strip():
+        jd_section = f"\n\nJOB DESCRIPTION:\n{job_description.strip()}\n"
+
+    schema_instruction = """
+    Return ONLY a raw JSON object. No markdown fences.
+    
+    Structure:
+    {
+      "analysis_a": { 
+        "ats_score": number, "summary": "string", "verdict": "string"
+      },
+      "analysis_b": { 
+        "ats_score": number, "summary": "string", "verdict": "string"
+      },
+      "comparison": {
+        "winner": "RESUME A" | "RESUME B" | "DRAW",
+        "rationale": "string",
+        "differences": ["string", "string", "string"]
+      }
+    }
+    """
+
+    prompt = f"""You are a brutally honest senior recruiter. Compare these two resumes side-by-side.
+{jd_section}
+You must analyze both individually AND compare them. 
+
+{schema_instruction}
+
+RESUME A:
+{truncated_a}
+
+RESUME B:
+{truncated_b}
+"""
+    return prompt
